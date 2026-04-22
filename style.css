@@ -1,0 +1,49 @@
+.clock {
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+@media (max-width: 600px) {
+    .clock {
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 601px) {
+    .clock {
+        font-size: 32px;
+    }
+}
+
+.animation {
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
