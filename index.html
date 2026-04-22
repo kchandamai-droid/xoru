@@ -3,17 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Digital Clock</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        .clock-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+        .clock { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .dark-mode { background-color: #1e1e1e; color: white; }
+        .toggle-btn { margin: 10px 0; }
+    </style>
 </head>
 <body>
-    <div class="clock-container">
-        <div id="clock" class="clock"></div>
-        <div class="timezone-select">
-            <label for="timezone">Select Timezone:</label>
-            <select id="timezone" onchange="updateClock()"></select>
-        </div>
+    <h1>Digital Clocks</h1>
+    <div>
+        <label for="timezone">Add Timezone: </label>
+        <input type="text" id="timezone" placeholder="e.g., America/New_York">
+        <button id="addTimezone">Add</button>
     </div>
-    <script src="script.js"></script>
+    <div class="toggle-btn">
+        <button id="toggleFormat">Toggle 12/24 Hour Format</button>
+        <button id="toggleDarkMode">Dark Mode</button>
+    </div>
+    <div id="clocks" class="clock-container"></div>
+
+    <script>
+        const clocksContainer = document.getElementById('clocks');
+        const toggleFormatBtn = document.getElementById('toggleFormat');
+        const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
+        let is24HourFormat = true;
+        let isDarkMode = false;
+        const timezones = [];
+
+        function updateClocks() {
+            clocksContainer.innerHTML = '';
+            timezones.forEach(timezone => {
+                const date = new Date().toLocaleString('en-US', { timeZone: timezone });
+                const clock = document.createElement('div');
+                clock.className = 'clock' + (isDarkMode ? ' dark-mode' : '');
+                clock.innerHTML = `<strong>${timezone}</strong>: ${formatDate(date)}`;
+                clocksContainer.appendChild(clock);
+            });
+        }
+
+        function formatDate(date) {
+            const options = is24HourFormat ? 
+                { hour: '2-digit', minute: '2-digit', second: '2-digit' } : 
+                { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            return new Date(date).toLocaleTimeString([], options);
+        }
+
+        toggleFormatBtn.addEventListener('click', () => {
+            is24HourFormat = !is24HourFormat;
+            updateClocks();
+        });
+
+        toggleDarkModeBtn.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            updateClocks();
+        });
+
+        document.getElementById('addTimezone').addEventListener('click', () => {
+            const timezone = document.getElementById('timezone').value;
+            if (timezone && !timezones.includes(timezone)) {
+                timezones.push(timezone);
+                updateClocks();
+                document.getElementById('timezone').value = '';
+            }
+        });
+    </script>
 </body>
 </html>
